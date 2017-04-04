@@ -15,7 +15,7 @@ export default {
   exports: 'named',
   globals: {
     lodash: '_',
-    debug: 'debug',
+    'debug-composer': 'createLogger',
   },
   targets: [
     {

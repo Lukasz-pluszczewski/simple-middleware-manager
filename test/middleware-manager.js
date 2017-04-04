@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 chai.use(sinonChai);
 
-import createCallbackHandler from '../src/index'; // change this
+import createMiddlewareManager from '../src/index';
 
 describe('callbackHandler', () => {
   const event1Data = {key: 'value1'};
@@ -53,7 +53,7 @@ describe('callbackHandler', () => {
     resetListeners();
   });
   it('should register eventListeners and call them', () => {
-    const ch = createCallbackHandler();
+    const ch = createMiddlewareManager();
 
     ch.on('event1', listeners.event1Listener1);
     ch.on('event1', listeners.event1Listener2);
@@ -74,7 +74,7 @@ describe('callbackHandler', () => {
   });
 
   it('should register middlewares, call them one by one and stop execution when next is not called', () => {
-    const ch = createCallbackHandler();
+    const ch = createMiddlewareManager();
 
     ch.use('event1', middlewares.event1Middleware1);
     ch.use('event1', middlewares.event1Middleware2);
@@ -97,7 +97,7 @@ describe('callbackHandler', () => {
   });
 
   it('should register middlewares in auto mode, call them one by one and auto execute next when it\'s not passed to the middleware', () => {
-    const ch = createCallbackHandler(true);
+    const ch = createMiddlewareManager(true);
 
     ch.use('event1', middlewares.event1Middleware1);
     ch.use('event1', middlewares.event1Middleware2);
