@@ -1,7 +1,7 @@
 # Simple middleware manager
 > Lightweight and simple yet powerful middleware manager 
 
-Tool to manage lists of middlewares. It works like express middlewares with a little more flexibility
+Tool to manage middlewares and/or eventListeners. It works like express middlewares with a little more flexibility.
 
 ## FAQ
 
@@ -77,9 +77,9 @@ manager.trigger('myEvent', 'myData'); // I will be called myData; Will I be call
 ```
 
 #### Using middleware manager in auto mode
- * In auto mode manager will detect if you passed next as second argument to the middleware
- * If you did manager will wait for it to be called
- * If you didn't `next()` function will be called automatically
+ * In auto mode, manager will detect if you passed next as second argument to the middleware
+ * If you did, manager will wait for it to be called
+ * If you didn't, `next()` function will be called automatically
  
 ```javascript
 import createMiddlewareManager from 'simple-middleware-manager';
