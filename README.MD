@@ -1,9 +1,7 @@
-# Library boilerplate
+# Simple middleware manager
 > Lightweight and simple yet powerful middleware manager 
 
 Tool to manage lists of middlewares. It works like express middlewares with a little more flexibility
-
-## WORK IN PROGRESS!
 
 ## FAQ
 
@@ -14,6 +12,11 @@ There are not many tools that helps use manage middlewares and callbacks and non
 Feel free to make a pull request. All contributions are appreciated!
 
 ## Usage
+
+#### Installing library
+```bash
+npm i --save simple-middleware-manager
+```
 
 #### Registering callbacks
 You can register callback (or eventListeners) using .on method and remove them with .off method
