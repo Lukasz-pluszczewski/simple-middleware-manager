@@ -19,7 +19,7 @@ npm i --save simple-middleware-manager
 ```
 
 #### Registering callbacks
-You can register callback (or eventListeners) using .on method and remove them with .off method
+You can register callback (or eventListeners) using `.on` method and remove them with `.off` method
 ```javascript
 import createMiddlewareManager from 'simple-middleware-manager';
 
@@ -41,10 +41,10 @@ manager.trigger('myEvent', 'myData'); // listener1 myData
 ```
 
 #### Registering middlewares
- * You can add middlewares using .use method, remove them using .unuse or .remove methods.
+ * You can add middlewares using `.use` method, remove them using `.unuse` or `.remove` methods.
  * Middlewares will be triggered in the order of registering
- * Each middleware get data as first argument and next() function as second
- * Calling next() function will trigger next middleware 
+ * Each middleware get data as first argument and `next()` function as second
+ * Calling `next()` function will trigger next middleware 
  * You can break middleware pipeline by not calling next
 ```javascript
 import createMiddlewareManager from 'simple-middleware-manager';
@@ -79,7 +79,7 @@ manager.trigger('myEvent', 'myData'); // I will be called myData; Will I be call
 #### Using middleware manager in auto mode
  * In auto mode manager will detect if you passed next as second argument to the middleware
  * If you did manager will wait for it to be called
- * If you didn't next() function will be called automatically
+ * If you didn't `next()` function will be called automatically
  
 ```javascript
 import createMiddlewareManager from 'simple-middleware-manager';
