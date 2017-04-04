@@ -44,7 +44,6 @@ const createCallbackHandler = (autoMode = false) => {
       let foundListeners = 0;
       let foundMiddlewares = 0;
       if (callbackHandler.callbacks[event]) {
-        let foundListeners = 0;
         for (let i = 0; i < callbackHandler.callbacks[event].length;) {
           if (callbackHandler.callbacks[event][i] === cb) {
             foundListeners++;
@@ -55,7 +54,6 @@ const createCallbackHandler = (autoMode = false) => {
         }
       }
       if (callbackHandler.middlewares[event]) {
-        let foundMiddlewares = 0;
         for (let i = 0; i < callbackHandler.middlewares[event].length;) {
           if (callbackHandler.middlewares[event][i] === cb) {
             foundMiddlewares++;
