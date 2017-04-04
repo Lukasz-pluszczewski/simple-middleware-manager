@@ -20,13 +20,14 @@
     "mochatest": "NODE_PATH=src mocha tools/testSetup.js \"./test/**/*.js\""
   },
   "keywords": [
-    "NPM",
-    "library",
-    "module",
-    "boilerplate",
-    "rollup",
-    "mocha",
-    "ES2015"
+    "middleware",
+    "manager",
+    "callbacks",
+    "handler",
+    "event",
+    "events",
+    "listener",
+    "eventListener"
   ],
   "author": "Łukasz Pluszczewski",
   "license": "MIT",

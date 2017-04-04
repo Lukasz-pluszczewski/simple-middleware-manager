@@ -1,5 +1,5 @@
 # Simple middleware manager
-> Lightweight and simple yet powerful middleware manager 
+> Lightweight and simple yet powerful middleware manager
 
 Tool to manage middlewares and/or eventListeners. It works like express middlewares with a little more flexibility.
 
