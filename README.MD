@@ -6,7 +6,7 @@ Tool to manage lists of middlewares. It works like express middlewares with a li
 ## FAQ
 
 #### Why this exists?
-There are not many tools that helps use manage middlewares and callbacks and none that have auto mode (see below)
+There are not many tools that helps manage middlewares and callbacks and none that have auto mode (see below)
 
 #### I found a bug! What should I do?
 Feel free to make a pull request. All contributions are appreciated!
