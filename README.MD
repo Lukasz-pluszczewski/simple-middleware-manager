@@ -1,6 +1,8 @@
 # Simple middleware manager
 > Lightweight and simple yet powerful middleware manager
 
+[![CircleCI](https://circleci.com/gh/Lukasz-pluszczewski/simple-middleware-manager/tree/master.svg?style=svg)](https://circleci.com/gh/Lukasz-pluszczewski/simple-middleware-manager/tree/master)
+
 Tool to manage middlewares and/or eventListeners. It works like express middlewares with a little more flexibility.
 
 ## FAQ
