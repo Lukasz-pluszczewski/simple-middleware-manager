@@ -3,7 +3,7 @@
 
 [![CircleCI](https://circleci.com/gh/Lukasz-pluszczewski/simple-middleware-manager/tree/master.svg?style=svg)](https://circleci.com/gh/Lukasz-pluszczewski/simple-middleware-manager/tree/master)
 
-Tool to manage middlewares and/or eventListeners. It works like express middlewares with a little more flexibility.
+Tool to manage middlewares and/or eventListeners. It works similar to express middlewares with a little more flexibility.
 
 ## FAQ
 
@@ -41,6 +41,46 @@ manager.off('myEvent', listener2);
 
 manager.trigger('myEvent', 'myData'); // listener1 myData
 ```
+
+#### Registering callbacks with additional conditions
+You can register eventListeners and add additional conditions that can prevent them from being called
+```javascript
+import createMiddlewareManager from 'simple-middleware-manager';
+
+const manager = createMiddlewareManager();
+
+// adding callbacks/eventListeners
+const listener1 = data => console.log('listener1', data);
+const listener2 = data => console.log('listener2', data);
+
+const condition = (event, data, listener) => {
+  if (data === 'foo') {
+    listener(data);
+  }
+};
+
+manager.on('myEvent', listener1);
+manager.on('myEvent', condition, listener2);
+
+manager.trigger('myEvent', 'myData'); // listener1 myData; listener2 myData
+
+manager.trigger('myEvent', 'myData'); // listener1 myData
+```
+
+NOTE: adding additional function may seem counter intuitive as the same logic can be just added to the listener. In the case of altering the listener, however, it will make it impossible to remove it later. See the example below:
+
+Imagine you use middleware-manager internally in another library, that allows you to add conditions:
+
+```javascript
+yourLibrary.on('eventName', { foo: 'bar' }, listener).
+```
+
+In that case you can wrap condition in a function and just pass listener unchanged which will allow you to remove it later easily still using simple-middleware-manager mechanism:
+
+```
+yourLibrary.off('eventName', listener);
+```
+
 
 #### Registering middlewares
  * You can add middlewares using `.use` method, remove them using `.unuse` or `.remove` methods.
@@ -86,7 +126,7 @@ manager.trigger('myEvent', 'myData'); // I will be called myData; Will I be call
 ```javascript
 import createMiddlewareManager from 'simple-middleware-manager';
 
-const manager = createMiddlewareManager(true); // creating manager with autoMode on
+const manager = createMiddlewareManager({ autoMode: true }); // creating manager with autoMode on
 
 // adding middlewares
 const middleware1 = (data) => { // we don't pass next() function so it will be called automatically
@@ -106,3 +146,6 @@ manager.use('myEvent', middleware3);
 
 manager.trigger('myEvent', 'myData'); // I will be called myData; I will be called as well myData
 ```
+
+## Roadmap
+- Adding conditions function for middlewares

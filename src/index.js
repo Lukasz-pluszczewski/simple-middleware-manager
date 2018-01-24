@@ -1,10 +1,17 @@
 import logger from './logger';
 
-const createCallbackHandler = (autoMode = false) => {
+const createCallbackHandler = ({ autoMode = false } = {}) => {
   const callbackHandler = {
     callbacks: {},
     middlewares: {},
-    on(event, cb) {
+    on(event, argWrapper, argCb) {
+      let wrapper = argWrapper;
+      let cb = argCb;
+      if (!cb) {
+        wrapper = undefined; // eslint-disable-line no-undefined
+        cb = argWrapper;
+      }
+
       if (typeof event !== 'string') {
         throw new Error('Event name must be a string');
       }
@@ -15,9 +22,16 @@ const createCallbackHandler = (autoMode = false) => {
         callbackHandler.callbacks[event] = [];
       }
       logger.info(`Adding callback for ${event} event`, cb);
-      callbackHandler.callbacks[event].push(cb);
+      callbackHandler.callbacks[event].push({ wrapper, cb });
     },
-    use(event, cb) {
+    use(event, argWrapper, argCb) {
+      let wrapper = argWrapper;
+      let cb = argCb;
+      if (!cb) {
+        wrapper = undefined; // eslint-disable-line no-undefined
+        cb = argWrapper;
+      }
+
       if (typeof event !== 'string') {
         throw new Error('Event name must be a string');
       }
@@ -28,7 +42,7 @@ const createCallbackHandler = (autoMode = false) => {
         callbackHandler.middlewares[event] = [];
       }
       logger.info(`Adding middleware for ${event} event`, cb);
-      callbackHandler.middlewares[event].push(cb);
+      callbackHandler.middlewares[event].push({ wrapper, cb });
     },
     remove(event, cb) {
       if (typeof event !== 'string') {
@@ -45,7 +59,7 @@ const createCallbackHandler = (autoMode = false) => {
       let foundMiddlewares = 0;
       if (callbackHandler.callbacks[event]) {
         for (let i = 0; i < callbackHandler.callbacks[event].length;) {
-          if (callbackHandler.callbacks[event][i] === cb) {
+          if (callbackHandler.callbacks[event][i].cb === cb) {
             foundListeners++;
             callbackHandler.callbacks[event].splice(i, 1);
             continue;
@@ -55,7 +69,7 @@ const createCallbackHandler = (autoMode = false) => {
       }
       if (callbackHandler.middlewares[event]) {
         for (let i = 0; i < callbackHandler.middlewares[event].length;) {
-          if (callbackHandler.middlewares[event][i] === cb) {
+          if (callbackHandler.middlewares[event][i].cb === cb) {
             foundMiddlewares++;
             callbackHandler.middlewares[event].splice(i, 1);
             continue;
@@ -82,20 +96,25 @@ const createCallbackHandler = (autoMode = false) => {
     },
     trigger(event, data) {
       if (callbackHandler.callbacks[event]) {
-        callbackHandler.callbacks[event].forEach(cb => cb(data));
+        callbackHandler.callbacks[event].forEach(cb => {
+          if (cb.wrapper) {
+            return cb.wrapper(event, data, cb.cb);
+          }
+          cb.cb(data);
+        });
       }
       if (callbackHandler.middlewares[event]) {
         const next = index => () => {
           if (callbackHandler.middlewares[event][index]) {
-            if (!autoMode || callbackHandler.middlewares[event][index].length > 1) {
-              callbackHandler.middlewares[event][index](data, next(index + 1));
+            if (!autoMode || callbackHandler.middlewares[event][index].cb.length > 1) {
+              callbackHandler.middlewares[event][index].cb(data, next(index + 1));
             } else {
-              callbackHandler.middlewares[event][index](data);
+              callbackHandler.middlewares[event][index].cb(data);
               next(index + 1)();
             }
           }
         };
-        return callbackHandler.middlewares[event][0](data, next(1));
+        return callbackHandler.middlewares[event][0].cb(data, next(1));
       }
     },
   };
